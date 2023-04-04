@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <script src="javascript/geturl.js"></script>
+        <script>
+            function download() {
+                var url = document.getElementById("url").value;
+                downURL("output",url);
+                document.getElementById("url").value="";
+            }
+        </script>
+        <title>test</title>
+    </head>
+    <body> 
+        test
+        <input type="text" id="url">
+        <input type="button" value="download" onclick="download()"><br>
+        <input type="button" value="get heck" onclick="watch_cmd(`output`)"><br>
+        <div id="output"></div>
+    </body>
+</html>
