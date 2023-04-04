@@ -21,7 +21,7 @@ ARCH = amd64
 BASECONTANA = ubuntu
 else
 ARCH = armv6l
-BASECONTANA = bookserver2:31000/arm/ubuntu
+BASECONTANA = ubuntu
 endif
 
 OPT = "--privileged"
@@ -29,7 +29,7 @@ OPT = "--privileged"
 create:
 	@echo "create dockerfile"
 	@echo "for ${NAME}:${TAG}"
-	@cat ${TEMPLATE} | sed s/BASECONTANA/${BASECONTANA}/ | sed s/TAG/${TAG}/ | sed s/ARCH/${ARCH}/ | sed s/GO_VERSION/${GO_VERSION}/ > ${TARGET_FILE}${TARGET}
+	cat ${TEMPLATE} | sed -e "s|BASECONTANA|${BASECONTANA}|g" | sed s/TAG/${TAG}/ | sed s/ARCH/${ARCH}/ | sed s/GO_VERSION/${GO_VERSION}/ > ${TARGET_FILE}${TARGET}
 build: create
 	@echo "build"
 	${DOCKER} build -t ${NAME}:${TAG} -f ${TARGET_FILE}${TARGET} ${TARGET_FILE}
