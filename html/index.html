@@ -1,11 +1,15 @@
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="/css/index.css">
         <script src="javascript/geturl.js"></script>
         <script>
             function download() {
                 var url = document.getElementById("url").value;
                 downURL("output",url);
                 document.getElementById("url").value="";
+            }
+            window.onload = function() {
+                getMp3List("list")
             }
         </script>
         <title>test</title>
@@ -15,6 +19,13 @@
         <input type="text" id="url">
         <input type="button" value="download" onclick="download()"><br>
         <input type="button" value="get heck" onclick="watch_cmd(`output`)"><br>
-        <div id="output"></div>
+        <div id="" class="list">
+            mp3 list
+            <div id="list" class=""></div>
+        </div>
+        <div id="" class="output">
+            download log
+            <div id="output" class=""></div>
+        </div>
     </body>
 </html>
