@@ -25,8 +25,8 @@ type YouTube_Down struct {
 }
 
 func Setup() YouTube_Down {
-	folderdata.Setup("./" + DOWNLOAD_FOLDER + "/")
-	folderdata.Read("")
+	Folderdata.Setup("./" + DOWNLOAD_FOLDER + "/")
+	Folderdata.Read("")
 	var youtubedown YouTube_Down
 	youtubedown.url_chan = []string{}
 	youtubedown.flag = true
@@ -184,7 +184,7 @@ func (youtubedown *YouTube_Down) Run(ctx context.Context) (string, error) {
 					}
 				}
 				youtubedown.url_chan = tmp
-				folderdata.Read("./")
+				Folderdata.Read("./")
 				youtubedown.mu.Unlock()
 			}
 		}
