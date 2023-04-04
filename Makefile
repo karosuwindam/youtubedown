@@ -41,4 +41,4 @@ remove:
 	${DOCKER} rmi ${NAME}:${TAG}
 buildkit: create
 	@echo "--- buildkit build --"
-	${BUILD} --addr ${BUILD_ADDR_ARM} build --output name=${NAME}:${TAG},${BUILD_OPTION} --frontend=dockerfile.v0 --local context=${TARGET}   --local dockerfile=${TARGET} --opt source=${TARGET}${TARGET_FILE}
+	${BUILD} --addr ${BUILD_ADDR_ARM} build --output name=${NAME}:${TAG},${BUILD_OPTION} --frontend=dockerfile.v0 --local context=${TARGET}   --local dockerfile=${TARGET} --opt source=${TARGET_FILE}${TARGET}
