@@ -7,10 +7,21 @@
  
  jobs:
    create_git_tag:
-     runs-on: ubuntu-latest
-     steps:
-       - uses: actions/checkout@v2
-       - run: |
-           cat version > TAG_NAME
-           git tag $(cat TAG_NAME)
-           git push origin $(cat TAG_NAME)
+    permissions:
+      actions: write
+      checks: write
+      contents: write
+      deployments: write
+      issues: write
+      packages: write
+      pull-requests: write
+      repository-projects: write
+      security-events: write
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          cat version > TAG_NAME
+          git tag $(cat TAG_NAME)
+          git push origin $(cat TAG_NAME)
