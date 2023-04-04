@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 As builder
+FROM BASECONTANA:22.04 As builder
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y locales locales-all curl gcc&& \
@@ -12,7 +12,7 @@ ENV PATH $PATH:/usr/local/go/bin
 WORKDIR /app
 ADD . .
 RUN go build -o app
-FROM ubuntu:22.04
+FROM BASECONTANA:22.04
 LABEL version="TAG"
 LABEL docker_arch="ARCH"
 LABEL go_version="GO_VERSION"

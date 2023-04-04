@@ -147,6 +147,33 @@ func (youtubedown *YouTube_Down) download(ctx context.Context, url string) (stri
 
 }
 
+type FileData struct {
+	No   int
+	Name string
+	Pass string
+}
+
+func (youtubedown *YouTube_Down) Mp3ListGet() []FileData {
+	youtubedown.mu.Lock()
+	tmp := Folderdata.Data
+	youtubedown.mu.Unlock()
+	output := []FileData{}
+	count := 1
+	for _, file := range tmp {
+		if strings.Index(file.Name, fillter1) > 0 {
+			outtmp := FileData{
+				No:   count,
+				Name: file.Name,
+				Pass: file.RootPath,
+			}
+			output = append(output, outtmp)
+			count++
+		}
+	}
+
+	return output
+}
+
 func (youtubedown *YouTube_Down) Run(ctx context.Context) (string, error) {
 	if !youtubedown.flag {
 		return "", errors.New("Not Youtube down SetUp")

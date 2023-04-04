@@ -3,6 +3,7 @@ package route
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"youtubedown/webserver"
 	"youtubedown/youtubedown"
 )
@@ -18,8 +19,19 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "hello World")
 }
 
+// URL解析用
+func urlAnalysis(url string) []string {
+	tmp := []string{}
+	for _, str := range strings.Split(url[1:], "/") {
+		tmp = append(tmp, str)
+	}
+	return tmp
+}
+
 var Route []webserver.WebConfig = []webserver.WebConfig{
+	{Pass: "/mp3/", Handler: dataconfig.mp3_download},
 	{Pass: "/download", Handler: dataconfig.download},
+	{Pass: "/list", Handler: dataconfig.mp3list},
 	{Pass: "/health", Handler: dataconfig.health},
 	{Pass: "/", Handler: viewhtml},
 }
