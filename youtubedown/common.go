@@ -211,7 +211,7 @@ func (youtubedown *YouTube_Down) Run(ctx context.Context) (string, error) {
 					}
 				}
 				youtubedown.url_chan = tmp
-				Folderdata.Read("./")
+				Folderdata.Read("")
 				youtubedown.mu.Unlock()
 			}
 		}
