@@ -27,7 +27,5 @@ WORKDIR /app
 RUN mkdir /.cache ./download
 RUN chmod 777 /app /.cache ./download
 COPY ./html html
-COPY ./run.sh ./
-RUN chmod 777 run.sh
 COPY --from=builder /app/app /app
 CMD ["./app"]
