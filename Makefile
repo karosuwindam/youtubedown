@@ -1,4 +1,4 @@
-TAG = 0.1.0
+TAG = ${shell cat version}
 DOCKER = docker
 NAME = bookserver2:31000/tool/youtubedown
 
