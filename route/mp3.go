@@ -28,6 +28,7 @@ func mp3edit(id string, data Mp3Id3Tag) {
 				log.Fatal("Error while opening mp3 file: ", err)
 			}
 			defer tag.Close()
+			tag.SetDefaultEncoding(id3v2.EncodingUTF16)
 			tag.SetTitle(data.Title)
 			tag.SetArtist(data.Artist)
 			tag.SetAlbum(data.Album)
@@ -39,6 +40,7 @@ func mp3edit(id string, data Mp3Id3Tag) {
 				Lyrics:            data.Lyrics,
 			}
 			tag.AddUnsynchronisedLyricsFrame(uslt)
+			// fmt.Println(uslt)
 
 			if err := tag.Save(); err != nil {
 				log.Panicln(err)
@@ -70,7 +72,7 @@ func mp3read(id string) Mp3Id3Tag {
 				}
 
 				lyrics = uslf.Lyrics
-				fmt.Println(uslf.Lyrics)
+				// fmt.Println(uslf.Lyrics)
 			}
 
 			output = Mp3Id3Tag{
@@ -105,7 +107,9 @@ func (dataconfig *config) mp3edit(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		mp3edit(data["id"], d)
-
+		fmt.Println(r.Method, r.URL.Path, d)
+	} else {
+		fmt.Println(r.Method, r.URL.Path)
 	}
 	jsondata, err := json.Marshal(mp3read(data["id"]))
 	if err != nil {
@@ -126,6 +130,8 @@ func (dataconfig *config) mp3view(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
+
+	fmt.Println(r.Method, r.URL.Path)
 	jsondata, err := json.Marshal(mp3read(data["id"]))
 	if err != nil {
 		fmt.Fprint(w, err.Error())

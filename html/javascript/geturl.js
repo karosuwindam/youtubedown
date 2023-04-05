@@ -32,8 +32,9 @@ function pushMp3Tag(jsondata,output,id){
 }
 
 function editMp3Tag(output,id) {
-  // var lyrics = document.getElementById("lyrics").innerHTML.replace(/<br>/g, '\r\n')
-  var lyrics = document.getElementById("lyrics").innerText.replace(/\n/g, '\r\n')
+  document.getElementById("lyrics").innerHTML = document.getElementById("lyrics").innerHTML.replace(/<div><br><\/div>/g, '<div></div>')
+  var lyrics = document.getElementById("lyrics").innerHTML.replace(/<div>/g, '').replace(/<\/div>/g, '\r\n').replace(/<br>/g,'\r\n')
+  // var lyrics = document.getElementById("lyrics").innerText.replace(/\n/g, '\r\n')
   var json = {
     "Title":document.getElementById("title").innerHTML,
     "Artist":document.getElementById("artist").innerHTML,
