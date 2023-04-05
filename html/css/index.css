@@ -57,6 +57,7 @@ div.output{
     width: 49%;
     /* color:white; */
     float: right;
+    overflow: scroll
     /* background-color: rgba(31, 34, 194, 0.7); */
 
 }

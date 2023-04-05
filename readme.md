@@ -11,7 +11,7 @@ pythonのツールであるyoutube-dlを利用してmp3に変換する
 |url|機能|備考|
 |--|--|--|
 |/view/:id|対象のmp3ファイルのID3v2タグを表示||
-|/edit/:id|対象のmp3ファイルのID3v2タグを編集||
+|/edit/:id|対象のmp3ファイルのID3v2タグを編集|未完成|
 |/mp3/:id|対象のmp3ファイルをダウンロード||
 |/download|YouTubeのURLを登録することでmp3に変換する||
 |/list|ダウンロードできるmp3のファイル名リスト||
