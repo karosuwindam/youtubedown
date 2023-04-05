@@ -10,6 +10,7 @@
             }
             window.onload = function() {
                 getMp3List("list")
+                getMp3Tag("edit","1")
             }
         </script>
         <title>test</title>
@@ -17,8 +18,11 @@
     <body> 
         test
         <input type="text" id="url">
-        <input type="button" value="download" onclick="download()"><br>
+        <input type="button" value="download" onclick="download()">
         <input type="button" value="get heck" onclick="watch_cmd(`output`)"><br>
+        <div id="" class="edit">
+            <div id="edit"></div>
+        </div>
         <div id="" class="list">
             mp3 list
             <div id="list" class=""></div>

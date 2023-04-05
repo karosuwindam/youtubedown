@@ -1,13 +1,59 @@
 div.list{
     border: inset 1px #000000;
     height: 90%;
-    width: 49.2%;
+    width: 50%;
     float: left;
     /* background-color: rgba(138, 138, 177, 0.7); */
 }
+div.edit{
+    border: inset 1px #000000;
+    height: 40%;
+    width: 49%;
+    float: right;
+    overflow: scroll
+    /* background-color: rgba(138, 138, 177, 0.7); */
+}
+div.row{
+    border: inset 1px #000000;
+    float: left;
+    width: 19%;
+}
+div.lyricsrow{
+    border: inset 1px #000000;
+    float: left;
+    height: 60%;
+    width: 19%;
+}
+div#title{
+    border: inset 1px #000000;
+    float: right;
+    width: 80%;
+}
+div#artist{
+    border: inset 1px #000000;
+    float: right;
+    width: 80%;
+}
+div#album{
+    border: inset 1px #000000;
+    float: right;
+    width: 80%;
+}
+div#year{
+    border: inset 1px #000000;
+    float: right;
+    width: 80%;
+}
+div#lyrics{
+    border: inset 1px #000000;
+    float: right;
+    width: 80%;
+    height: 60%;
+    overflow: scroll;
+}
 div.output{
     border: inset 1px #000000;
-    height: 90%;
+    height: 50%;
     width: 49%;
     /* color:white; */
     float: right;
