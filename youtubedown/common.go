@@ -155,6 +155,7 @@ type FileData struct {
 
 func (youtubedown *YouTube_Down) Mp3ListGet() []FileData {
 	youtubedown.mu.Lock()
+	Folderdata.Read()
 	tmp := Folderdata.Data
 	youtubedown.mu.Unlock()
 	output := []FileData{}

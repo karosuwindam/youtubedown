@@ -65,6 +65,7 @@ func EndCK() {
 }
 
 func main() {
+	log.SetFlags(log.Llongfile | log.Flags())
 	ctx := context.Background()
 	fmt.Println("start")
 	if err := Run(ctx); err != nil {
