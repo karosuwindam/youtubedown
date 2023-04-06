@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	fillter  string = "[ffmpeg]"
+	fillter  string = "[ffmpeg] Destination: "
 	fillter1 string = ".mp3"
 )
 
@@ -45,16 +45,17 @@ func download(url string) (string, error) {
 			break
 		}
 	}
-	ary = strings.Split(tmp, " ")
-	for i := 0; i < len(ary); i++ {
-		if n := strings.Index(ary[i], fillter1); n > 0 {
-			tmp = ary[i][:n+len(fillter1)]
-			break
-		}
+	if i := strings.Index(tmp, fillter); i > 0 {
+		tmp = tmp[len(fillter)+i:]
+
 	}
 
 	return tmp, nil
 
+}
+
+func getFileTitle(url string) string {
+	return ""
 }
 
 // ダウンロードしたファイルを特定に移動する
@@ -74,9 +75,12 @@ func mvfolder(name string) {
 	// 	log.Fatal(err)
 	// }
 	// 大本ファイル
+	p, _ := os.Getwd()
+	fmt.Println("mv file:", p, name)
 	r, err := os.Open(name)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 	//出力先
 	// 作成するファイル
