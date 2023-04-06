@@ -135,12 +135,15 @@ func (youtubedown *YouTube_Down) download(ctx context.Context, url string) (stri
 			break
 		}
 	}
-	ary = strings.Split(tmp, " ")
-	for i := 0; i < len(ary); i++ {
-		if n := strings.Index(ary[i], fillter1); n > 0 {
-			tmp = ary[i][:n+len(fillter1)]
-			break
-		}
+	if i := strings.Index(tmp, fillter); i > 0 {
+		tmp = tmp[len(fillter)+i:]
+	} else {
+		return "", errors.New("Not name " + fillter)
+	}
+	if i := strings.Index(tmp, fillter1); i > 0 {
+		tmp = tmp[:i+len(fillter1)]
+	} else {
+		return "", errors.New("Not name " + fillter1)
 	}
 
 	return tmp, nil
@@ -155,6 +158,7 @@ type FileData struct {
 
 func (youtubedown *YouTube_Down) Mp3ListGet() []FileData {
 	youtubedown.mu.Lock()
+	Folderdata.Read("")
 	tmp := Folderdata.Data
 	youtubedown.mu.Unlock()
 	output := []FileData{}
