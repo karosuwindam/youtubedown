@@ -30,6 +30,7 @@ func urlAnalysis(url string) []string {
 
 var Route []webserver.WebConfig = []webserver.WebConfig{
 	{Pass: "/mp3/", Handler: dataconfig.mp3_download},
+	{Pass: "/mp3image/", Handler: dataconfig.mp3viewimage},
 	{Pass: "/view/", Handler: dataconfig.mp3view},
 	{Pass: "/edit/", Handler: dataconfig.mp3edit},
 	{Pass: "/download", Handler: dataconfig.download},

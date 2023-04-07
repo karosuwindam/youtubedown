@@ -78,24 +78,35 @@ function getMp3Tag(output,id) {
 }
 
 function createMp3Tag(outputid,data,id){
-  var output = "";
+  var output = "<div class=\"table\">";
   output += "<div><button onclick=\""+"editMp3Tag('"+outputid+"'"+",'"+id+"')"+"\">write</button></div>"
   output += createTextDiv(data.Title,"title")
   output += createTextDiv(data.Artist,"artist")
   output += createTextDiv(data.Album,"album")
   output += createTextDiv(data.Year,"year")
   output += createTextDiv(data.Lyrics.replace(/\r\n/g, '<br>'),"lyrics")
+  output += createImageView(id)
+  output += "</div>"
   return output
 }
 
 function createTextDiv(str,id) {
-  var output =""
+  var output ="<div class=\"table_line\">"
   if (id=="lyrics"){
     output += "<div class=\"lyricsrow\">"+id+"</div>"
   }else{
     output += "<div class=\"row\">"+id+"</div>"
   }
   output += "<div class id=\""+id+"\" contenteditable>"+str+"</div>"
+  output += "</div>"
+  return output
+}
+
+function createImageView(id) {
+  var output = "<div class=\"table_line\">"
+    output += "<div class=\"row\">"+"Image"+"</div>"
+    output += "<div class=\"row\">"+"<img src=\""+"/mp3image/"+id+"\">"+"</div>"
+    output += "</div>"
   return output
 }
 

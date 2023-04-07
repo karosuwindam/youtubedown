@@ -1,3 +1,4 @@
+
 div.list{
     border: inset 1px #000000;
     height: 90%;
@@ -13,43 +14,58 @@ div.edit{
     overflow: scroll
     /* background-color: rgba(138, 138, 177, 0.7); */
 }
+.table{
+    display: table;
+    width: 100%;
+}
+.table_line {
+    display: table-row    ;
+    width: 100%;
+}
 div.row{
-    border: inset 1px #000000;
-    float: left;
-    width: 19%;
+    border: solid  1px #000000;
+    display: table-cell;
+    /* float: left; */
+    width: 20%;
 }
 div.lyricsrow{
-    border: inset 1px #000000;
-    float: left;
+    border: solid  1px #000000;
+    display: table-cell;
+    /* float: left; */
     height: 60%;
-    width: 19%;
-}
-div#title{
-    border: inset 1px #000000;
-    float: right;
-    width: 80%;
-}
-div#artist{
-    border: inset 1px #000000;
-    float: right;
-    width: 80%;
-}
-div#album{
-    border: inset 1px #000000;
-    float: right;
-    width: 80%;
-}
-div#year{
-    border: inset 1px #000000;
-    float: right;
-    width: 80%;
+    width: 20%;
 }
 div#lyrics{
-    border: inset 1px #000000;
-    float: right;
+    border: solid  1px #000000;
+    display: table-cell;
+    /* float: right; */
     width: 80%;
     height: 60%;
     overflow: scroll;
+}
+div#title{
+    border: solid 1px #000000;
+    display: table-cell;
+    /* float: right; */
+    width: 80%;
+}
+div#artist{
+    border: solid 1px #000000;
+    display: table-cell;
+    /* float: right; */
+    width: 80%;
+}
+div#album{
+    border: solid 1px #000000;
+    display: table-cell;
+    /* float: right; */
+    width: 80%;
+}
+div#year{
+    border: solid 1px #000000;
+    display: table-cell;
+    /* float: right; */
+    width: 80%;
 }
 div.output{
     border: inset 1px #000000;
