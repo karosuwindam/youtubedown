@@ -36,10 +36,10 @@ function editMp3Tag(output,id) {
   var lyrics = document.getElementById("lyrics").innerHTML.replace(/<div>/g, '').replace(/<\/div>/g, '\r\n').replace(/<br>/g,'\r\n')
   // var lyrics = document.getElementById("lyrics").innerText.replace(/\n/g, '\r\n')
   var json = {
-    "Title":document.getElementById("title").innerHTML,
-    "Artist":document.getElementById("artist").innerHTML,
-    "Album":document.getElementById("album").innerHTML,
-    "Year":document.getElementById("year").innerHTML,
+    "Title":document.getElementById("title").innerText,
+    "Artist":document.getElementById("artist").innerText,
+    "Album":document.getElementById("album").innerText,
+    "Year":document.getElementById("year").innerText,
     "Lyrics":lyrics,
   }
   // console.log(json)
@@ -90,22 +90,22 @@ function createMp3Tag(outputid,data,id){
   return output
 }
 
-function createTextDiv(str,id) {
+function createTextDiv(str,tagid) {
   var output ="<div class=\"table_line\">"
-  if (id=="lyrics"){
-    output += "<div class=\"lyricsrow\">"+id+"</div>"
+  if (tagid=="lyrics"){
+    output += "<div class=\"lyricsrow\">"+tagid+"</div>"
   }else{
-    output += "<div class=\"row\">"+id+"</div>"
+    output += "<div class=\"row\">"+tagid+"</div>"
   }
-  output += "<div class id=\""+id+"\" contenteditable>"+str+"</div>"
+  output += "<div class=\""+tagid+"\" ><div style=\"max-height: 300px;\" id=\""+tagid+"\" contenteditable>"+str+"</div></div>"
   output += "</div>"
   return output
 }
 
-function createImageView(id) {
+function createImageView(idpass) {
   var output = "<div class=\"table_line\">"
     output += "<div class=\"row\">"+"Image"+"</div>"
-    output += "<div class=\"row\">"+"<img src=\""+"/mp3image/"+id+"\">"+"</div>"
+    output += "<div class=\"row\"><div>"+"<img src=\""+"/mp3image/"+idpass+"\">"+"</div></div>"
     output += "</div>"
   return output
 }

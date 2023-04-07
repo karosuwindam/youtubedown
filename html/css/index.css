@@ -11,7 +11,7 @@ div.edit{
     height: 40%;
     width: 49%;
     float: right;
-    overflow: scroll
+    overflow-y: scroll
     /* background-color: rgba(138, 138, 177, 0.7); */
 }
 .table{
@@ -28,6 +28,12 @@ div.row{
     /* float: left; */
     width: 20%;
 }
+div.row2{
+    border: solid  1px #000000;
+    display: table-cell;
+    /* float: left; */
+    width: 80%;
+}
 div.lyricsrow{
     border: solid  1px #000000;
     display: table-cell;
@@ -35,33 +41,33 @@ div.lyricsrow{
     height: 60%;
     width: 20%;
 }
-div#lyrics{
+div.lyrics{
     border: solid  1px #000000;
     display: table-cell;
     /* float: right; */
     width: 80%;
     height: 60%;
-    overflow: scroll;
+    overflow-y: scroll;
 }
-div#title{
+div.title{
     border: solid 1px #000000;
     display: table-cell;
     /* float: right; */
     width: 80%;
 }
-div#artist{
+div.artist{
     border: solid 1px #000000;
     display: table-cell;
     /* float: right; */
     width: 80%;
 }
-div#album{
+div.album{
     border: solid 1px #000000;
     display: table-cell;
     /* float: right; */
     width: 80%;
 }
-div#year{
+div.year{
     border: solid 1px #000000;
     display: table-cell;
     /* float: right; */
@@ -73,7 +79,9 @@ div.output{
     width: 49%;
     /* color:white; */
     float: right;
-    overflow: scroll
+    overflow-y: scroll
     /* background-color: rgba(31, 34, 194, 0.7); */
-
+}
+img {
+    max-height: 500px;
 }
