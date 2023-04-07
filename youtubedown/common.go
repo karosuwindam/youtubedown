@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"os/exec"
 	"strings"
 	"sync"
@@ -163,16 +164,25 @@ func (youtubedown *YouTube_Down) Mp3ListGet() []FileData {
 	youtubedown.mu.Unlock()
 	output := []FileData{}
 	count := 1
+	flag := false
 	for _, file := range tmp {
 		if strings.Index(file.Name, fillter1) > 0 {
-			outtmp := FileData{
-				No:   count,
-				Name: file.Name,
-				Pass: file.RootPath,
+			if Exists(file.RootPath + file.Name) {
+				outtmp := FileData{
+					No:   count,
+					Name: file.Name,
+					Pass: file.RootPath,
+				}
+				output = append(output, outtmp)
+				count++
+			} else {
+				flag = true
 			}
-			output = append(output, outtmp)
-			count++
 		}
+	}
+	if flag {
+		Folderdata.Setup("./" + DOWNLOAD_FOLDER + "/")
+		Folderdata.Read("")
 	}
 
 	return output
@@ -221,4 +231,10 @@ func (youtubedown *YouTube_Down) Run(ctx context.Context) (string, error) {
 		}
 		time.Sleep(100 * time.Microsecond)
 	}
+}
+
+// ファイルの存在確認
+func Exists(filename string) bool {
+	_, err := os.Stat(filename)
+	return err == nil
 }
