@@ -7,6 +7,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/bogem/id3v2/v2"
 )
 
 const (
@@ -59,6 +61,20 @@ func download(url string) (string, error) {
 
 func getFileTitle(url string) string {
 	return ""
+}
+
+// ダウンロードしたファイルにタグを追加する
+func addTagTitle(filename string) {
+	tag, err := id3v2.Open(filename, id3v2.Options{Parse: true})
+	if err != nil {
+		log.Println("Error while opening mp3 file: ", err)
+	}
+	defer tag.Close()
+	tag.SetTitle(filename[:len(filename)-len(fillter1)])
+	if err := tag.Save(); err != nil {
+		log.Panicln(err)
+	}
+
 }
 
 // ダウンロードしたファイルを特定に移動する

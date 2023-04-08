@@ -214,6 +214,7 @@ func (youtubedown *YouTube_Down) Run(ctx context.Context) (string, error) {
 				if str, err := youtubedown.download(ctx, url); err != nil {
 					log.Println(url, ":", err)
 				} else {
+					addTagTitle(str)
 					mvfolder(str)
 					fmt.Println(str)
 				}
