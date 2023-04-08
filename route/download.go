@@ -94,9 +94,9 @@ func mp3Output(root string, name string, w http.ResponseWriter) {
 		// ファイル名
 		w.Header().Set("Content-Disposition", "attachment; filename="+name)
 		// コンテントタイプ
-		w.Header().Set("Content-Type", "application/mpeg")
+		w.Header().Set("Content-Type", "audio/mpeg")
 		// ファイルの長さ
-		w.Header().Set("Content-Length", string(len(buffer)))
+		w.Header().Set("Content-Length", strconv.Itoa(len(buffer)))
 		// bodyに書き込み
 		w.Write(buffer)
 	}

@@ -164,6 +164,7 @@ function watch_cmd(output) {
     }
     timer = setTimeout(watch_cmd,2000,output)
   }else {
+    getMp3List("list")
     document.getElementById(output).innerHTML = "Check End";
     console.log("TimeEnd");
     timer = null;

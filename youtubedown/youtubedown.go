@@ -3,20 +3,27 @@ package youtubedown
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/bogem/id3v2/v2"
 )
 
 const (
-	fillter  string = "[ffmpeg] Destination: "
-	fillter1 string = ".mp3"
+	// CMD_PASS string = "/usr/bin/youtube-dl"
+	CMD_PASS string = "/usr/bin/yt-dlp"
+	// fillter  string = "[ffmpeg] Destination: "
+	fillter     string = "[ExtractAudio] Destination: "
+	fillter1    string = ".mp3"
+	fillter_jpg string = ".jpg"
 )
 
 func download(url string) (string, error) {
 	cmddata := []string{
-		"/usr/bin/youtube-dl",
+		CMD_PASS,
 		"-x",
 		"--audio-format",
 		"mp3",
@@ -56,6 +63,46 @@ func download(url string) (string, error) {
 
 func getFileTitle(url string) string {
 	return ""
+}
+
+// ダウンロードしたファイルにタグを追加する
+func addTagTitle(filename string) {
+	tag, err := id3v2.Open(filename, id3v2.Options{Parse: true})
+	if err != nil {
+		log.Println("Error while opening mp3 file: ", err)
+	}
+	defer tag.Close()
+	tag.SetTitle(filename[:len(filename)-len(fillter1)])
+	if err := tag.Save(); err != nil {
+		log.Panicln(err)
+	}
+
+}
+
+// ダウンロードしたファイルにアートを追加する
+func addTagPicture(filename, filename_j string) {
+	tag, err := id3v2.Open(filename, id3v2.Options{Parse: true})
+	if tag == nil || err != nil {
+		log.Println("Error while opening mp3 file: ", err)
+		return
+	}
+	defer tag.Close()
+	artwork, err := ioutil.ReadFile(filename_j)
+	if err != nil {
+		log.Println("Error while reading artwork file", err)
+		return
+	}
+
+	pic := id3v2.PictureFrame{
+		Encoding:    id3v2.EncodingUTF8,
+		MimeType:    "image/jpeg",
+		PictureType: id3v2.PTFrontCover,
+		Description: "Front cover",
+		Picture:     artwork,
+	}
+	tag.AddAttachedPicture(pic)
+	tag.Save()
+
 }
 
 // ダウンロードしたファイルを特定に移動する

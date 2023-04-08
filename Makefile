@@ -35,7 +35,7 @@ build: create
 	${DOCKER} build -t ${NAME}:${TAG} -f ${TARGET_FILE}${TARGET} ${TARGET_FILE}
 up:
 	${DOCKER} run -d --name=youtubedown -p 8080:8080 ${NAME}:${TAG} 
-down: rm
+down: 
 	${DOCKER} stop youtubedown
 rm:
 	${DOCKER} rm youtubedown
