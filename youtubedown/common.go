@@ -78,6 +78,59 @@ func (youtubedown *YouTube_Down) Add(url string) {
 	youtubedown.mu.Unlock()
 }
 
+// jpgダウンロード
+func (youtubedown *YouTube_Down) downloadJpg(ctx context.Context, url, name string) error {
+	var err error = nil
+	cmddata := []string{
+		CMD_PASS,
+		"--write-thumbnail",
+		"--skip-download",
+		"--convert-thumbnails",
+		"jpg",
+	}
+	if url != "" {
+		cmddata = append(cmddata, url)
+	}
+	ctx1, cancel1 := context.WithCancel(ctx)
+
+	cmd := exec.Command("python3", cmddata...)
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	cmd.Start()
+
+	fmt.Println("Download Start for", url)
+	go func(ctx1 context.Context) {
+		for {
+			select {
+			case <-ctx1.Done():
+				youtubedown.writecmd("")
+			default:
+				youtubedown.writecmd(stdout.String())
+			}
+			time.Sleep(100 * time.Microsecond)
+		}
+	}(ctx1)
+	cmd.Wait()
+	if stderr.String() != "" {
+		err = errors.New(stderr.String())
+	}
+
+	cancel1()
+	if i := strings.Index(name, fillter1); i > 0 {
+		name_j := name[:i] + fillter_jpg
+		if !Exists(name_j) {
+			err = errors.New("Not file :" + name_j)
+		} else {
+			addTagPicture(name, name_j)
+			os.Remove(name_j)
+		}
+	}
+	return err
+}
+
+// mp3のダウンロード
 func (youtubedown *YouTube_Down) download(ctx context.Context, url string) (string, error) {
 	var err error = nil
 	cmddata := []string{
@@ -215,6 +268,7 @@ func (youtubedown *YouTube_Down) Run(ctx context.Context) (string, error) {
 					log.Println(url, ":", err)
 				} else {
 					addTagTitle(str)
+					youtubedown.downloadJpg(ctx, url, str)
 					mvfolder(str)
 					fmt.Println(str)
 				}

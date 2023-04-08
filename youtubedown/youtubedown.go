@@ -3,6 +3,7 @@ package youtubedown
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -15,8 +16,9 @@ const (
 	// CMD_PASS string = "/usr/bin/youtube-dl"
 	CMD_PASS string = "/usr/bin/yt-dlp"
 	// fillter  string = "[ffmpeg] Destination: "
-	fillter  string = "[ExtractAudio] Destination: "
-	fillter1 string = ".mp3"
+	fillter     string = "[ExtractAudio] Destination: "
+	fillter1    string = ".mp3"
+	fillter_jpg string = ".jpg"
 )
 
 func download(url string) (string, error) {
@@ -74,6 +76,32 @@ func addTagTitle(filename string) {
 	if err := tag.Save(); err != nil {
 		log.Panicln(err)
 	}
+
+}
+
+// ダウンロードしたファイルにアートを追加する
+func addTagPicture(filename, filename_j string) {
+	tag, err := id3v2.Open(filename, id3v2.Options{Parse: true})
+	if tag == nil || err != nil {
+		log.Println("Error while opening mp3 file: ", err)
+		return
+	}
+	defer tag.Close()
+	artwork, err := ioutil.ReadFile(filename_j)
+	if err != nil {
+		log.Println("Error while reading artwork file", err)
+		return
+	}
+
+	pic := id3v2.PictureFrame{
+		Encoding:    id3v2.EncodingUTF8,
+		MimeType:    "image/jpeg",
+		PictureType: id3v2.PTFrontCover,
+		Description: "Front cover",
+		Picture:     artwork,
+	}
+	tag.AddAttachedPicture(pic)
+	tag.Save()
 
 }
 
