@@ -81,7 +81,7 @@ func (youtubedown *YouTube_Down) Add(url string) {
 func (youtubedown *YouTube_Down) download(ctx context.Context, url string) (string, error) {
 	var err error = nil
 	cmddata := []string{
-		"/usr/bin/youtube-dl",
+		CMD_PASS,
 		"-x",
 		"--audio-format",
 		"mp3",

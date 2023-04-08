@@ -10,13 +10,16 @@ import (
 )
 
 const (
-	fillter  string = "[ffmpeg] Destination: "
+	// CMD_PASS string = "/usr/bin/youtube-dl"
+	CMD_PASS string = "/usr/bin/yt-dlp"
+	// fillter  string = "[ffmpeg] Destination: "
+	fillter  string = "[ExtractAudio] Destination: "
 	fillter1 string = ".mp3"
 )
 
 func download(url string) (string, error) {
 	cmddata := []string{
-		"/usr/bin/youtube-dl",
+		CMD_PASS,
 		"-x",
 		"--audio-format",
 		"mp3",

@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"sync"
+	"youtubedown/youtubedown"
 
 	"github.com/bogem/id3v2/v2"
 )
@@ -92,36 +94,41 @@ func mp3read(id string) Mp3Id3Tag {
 
 	files := dataconfig.dl.Mp3ListGet()
 	output := Mp3Id3Tag{}
+	var wp sync.WaitGroup
 	for _, file := range files {
-		if strconv.Itoa(file.No) == id {
-			tag, err := id3v2.Open(file.Pass+file.Name, id3v2.Options{Parse: true})
-			if err != nil {
-				log.Fatal("Error while opening mp3 file: ", err)
-			}
-			defer tag.Close()
-			lyrics := ""
-			uslfs := tag.GetFrames(tag.CommonID("Unsynchronised lyrics/text transcription"))
-			for _, f := range uslfs {
-				uslf, ok := f.(id3v2.UnsynchronisedLyricsFrame)
-				if !ok {
-					log.Fatal("Couldn't assert USLT frame")
+		wp.Add(1)
+		go func(file youtubedown.FileData) {
+			defer wp.Done()
+			if strconv.Itoa(file.No) == id {
+				tag, err := id3v2.Open(file.Pass+file.Name, id3v2.Options{Parse: true})
+				if err != nil {
+					log.Fatal("Error while opening mp3 file: ", err)
+				}
+				defer tag.Close()
+				lyrics := ""
+				uslfs := tag.GetFrames(tag.CommonID("Unsynchronised lyrics/text transcription"))
+				for _, f := range uslfs {
+					uslf, ok := f.(id3v2.UnsynchronisedLyricsFrame)
+					if !ok {
+						log.Fatal("Couldn't assert USLT frame")
+					}
+
+					lyrics = uslf.Lyrics
+					// fmt.Println(uslf.Lyrics)
 				}
 
-				lyrics = uslf.Lyrics
-				// fmt.Println(uslf.Lyrics)
+				output = Mp3Id3Tag{
+					Title:  tag.Title(),
+					Artist: tag.Artist(),
+					Album:  tag.Album(),
+					Year:   tag.Year(),
+					Lyrics: lyrics,
+				}
 			}
 
-			output = Mp3Id3Tag{
-				Title:  tag.Title(),
-				Artist: tag.Artist(),
-				Album:  tag.Album(),
-				Year:   tag.Year(),
-				Lyrics: lyrics,
-			}
-			break
-
-		}
+		}(file)
 	}
+	wp.Wait()
 	return output
 }
 
@@ -238,7 +245,7 @@ func (dataconfig *config) mp3viewimage(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", image.imagetype)
 		// ファイル名
 		w.Header().Set("Content-Disposition", "attachment; filename="+image.name)
-		w.Header().Set("Content-Length", string(len(image.image)))
+		w.Header().Set("Content-Length", strconv.Itoa(len(image.image)))
 		w.Write(image.image)
 		// fmt.Fprintf(w, "%s", image.image)
 
