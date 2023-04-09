@@ -1,12 +1,12 @@
 package youtubedown
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
-	"os/exec"
 	"strings"
 
 	"github.com/bogem/id3v2/v2"
@@ -21,23 +21,10 @@ const (
 	fillter_jpg string = ".jpg"
 )
 
-func download(url string) (string, error) {
-	cmddata := []string{
-		CMD_PASS,
-		"-x",
-		"--audio-format",
-		"mp3",
-	}
-	if url != "" {
-		cmddata = append(cmddata, url)
-	}
-	cmd := exec.Command("python3", cmddata...)
-	fmt.Println("Download Start for", url)
-	out, err := cmd.Output()
-	if err != nil {
-		return "", err
-	}
-	tmp := string(out)
+// CMD_PASSのログからタイトルを取得
+func getFileTitle(tmpdata string) (string, error) {
+
+	tmp := tmpdata
 	ary := strings.Split(tmp, "\r")
 	for i := 0; i < len(ary); i++ {
 		if strings.Index(ary[i], fillter) > 0 {
@@ -54,15 +41,16 @@ func download(url string) (string, error) {
 	}
 	if i := strings.Index(tmp, fillter); i > 0 {
 		tmp = tmp[len(fillter)+i:]
-
+	} else {
+		return "", errors.New("Not name " + fillter)
+	}
+	if i := strings.Index(tmp, fillter1); i > 0 {
+		tmp = tmp[:i+len(fillter1)]
+	} else {
+		return "", errors.New("Not name " + fillter1)
 	}
 
 	return tmp, nil
-
-}
-
-func getFileTitle(url string) string {
-	return ""
 }
 
 // ダウンロードしたファイルにタグを追加する
