@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"time"
+	"youtubedown/pyroscopesetup"
 	"youtubedown/route"
 	"youtubedown/webserver"
 	"youtubedown/youtubedown"
@@ -66,6 +67,7 @@ func EndCK() {
 
 func main() {
 	log.SetFlags(log.Llongfile | log.Flags())
+	pyroscopesetup.Setup()
 	ctx := context.Background()
 	fmt.Println("start")
 	if err := Run(ctx); err != nil {
