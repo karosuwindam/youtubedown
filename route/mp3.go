@@ -26,66 +26,71 @@ type Mp3Id3Tag struct {
 // Id3v2出力
 func mp3edit(id string, data Mp3Id3Tag) {
 	files := dataconfig.dl.Mp3ListGet()
+	var wp sync.WaitGroup
 	for _, file := range files {
-		if strconv.Itoa(file.No) == id {
-			//ファイルをホームフォルダにコピー
-			r, err := os.Open(file.Pass + file.Name)
-			if err != nil {
-				log.Fatal(err)
-			}
-			c, err := os.Create(file.Name)
-			if err != nil {
-				log.Fatal(err)
-			}
-			_, err = io.Copy(c, r)
-			if err != nil {
-				log.Fatal(err)
-			}
-			r.Close()
-			c.Close()
+		wp.Add(1)
+		go func(file youtubedown.FileData) {
+			defer wp.Done()
+			if strconv.Itoa(file.No) == id {
+				//ファイルをホームフォルダにコピー
+				r, err := os.Open(file.Pass + file.Name)
+				if err != nil {
+					log.Fatal(err)
+				}
+				c, err := os.Create(file.Name)
+				if err != nil {
+					log.Fatal(err)
+				}
+				_, err = io.Copy(c, r)
+				if err != nil {
+					log.Fatal(err)
+				}
+				r.Close()
+				c.Close()
 
-			tag, err := id3v2.Open(file.Name, id3v2.Options{Parse: true})
-			if err != nil {
-				log.Fatal("Error while opening mp3 file: ", err)
-			}
-			defer tag.Close()
-			tag.SetDefaultEncoding(id3v2.EncodingUTF16)
-			tag.SetTitle(data.Title)
-			tag.SetArtist(data.Artist)
-			tag.SetAlbum(data.Album)
-			tag.SetYear(data.Year)
-			uslt := id3v2.UnsynchronisedLyricsFrame{
-				Encoding:          id3v2.EncodingUTF16,
-				Language:          "eng",
-				ContentDescriptor: "",
-				Lyrics:            data.Lyrics,
-			}
-			tag.AddUnsynchronisedLyricsFrame(uslt)
-			// fmt.Println(uslt)
+				tag, err := id3v2.Open(file.Name, id3v2.Options{Parse: true})
+				if err != nil {
+					log.Fatal("Error while opening mp3 file: ", err)
+				}
+				defer tag.Close()
+				tag.SetDefaultEncoding(id3v2.EncodingUTF16)
+				tag.SetTitle(data.Title)
+				tag.SetArtist(data.Artist)
+				tag.SetAlbum(data.Album)
+				tag.SetYear(data.Year)
+				uslt := id3v2.UnsynchronisedLyricsFrame{
+					Encoding:          id3v2.EncodingUTF16,
+					Language:          "eng",
+					ContentDescriptor: "",
+					Lyrics:            data.Lyrics,
+				}
+				tag.AddUnsynchronisedLyricsFrame(uslt)
+				// fmt.Println(uslt)
 
-			if err := tag.Save(); err != nil {
-				log.Panicln(err)
-			}
-			//ホームフォルダのファイルをコピー
-			r2, err := os.Open(file.Name)
-			if err != nil {
-				log.Fatal(err)
-			}
-			c2, err := os.Create(file.Pass + file.Name)
-			if err != nil {
-				log.Fatal(err)
-			}
-			_, err = io.Copy(c2, r2)
-			if err != nil {
-				log.Fatal(err)
-			}
-			r2.Close()
-			c2.Close()
-			os.Remove(file.Name)
+				if err := tag.Save(); err != nil {
+					log.Panicln(err)
+				}
+				//ホームフォルダのファイルをコピー
+				r2, err := os.Open(file.Name)
+				if err != nil {
+					log.Fatal(err)
+				}
+				c2, err := os.Create(file.Pass + file.Name)
+				if err != nil {
+					log.Fatal(err)
+				}
+				_, err = io.Copy(c2, r2)
+				if err != nil {
+					log.Fatal(err)
+				}
+				r2.Close()
+				c2.Close()
+				os.Remove(file.Name)
 
-			break
-		}
+			}
+		}(file)
 	}
+	wp.Wait()
 	fmt.Println(data)
 }
 

@@ -4,6 +4,7 @@ div.list{
     height: 90%;
     width: 50%;
     float: left;
+    overflow-x: scroll;
     /* background-color: rgba(138, 138, 177, 0.7); */
 }
 div.edit{

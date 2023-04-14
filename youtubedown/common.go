@@ -72,6 +72,7 @@ func (youtubedown *YouTube_Down) ReadCMD() string {
 
 }
 
+// ダウンロード予定のURLの追加
 func (youtubedown *YouTube_Down) Add(url string) {
 	youtubedown.mu.Lock()
 	youtubedown.url_chan = append(youtubedown.url_chan, url)
@@ -174,33 +175,7 @@ func (youtubedown *YouTube_Down) download(ctx context.Context, url string) (stri
 	if err != nil {
 		return "", err
 	}
-	tmp := string(out)
-	ary := strings.Split(tmp, "\r")
-	for i := 0; i < len(ary); i++ {
-		if strings.Index(ary[i], fillter) > 0 {
-			tmp = ary[i]
-			break
-		}
-	}
-	ary = strings.Split(tmp, "\n")
-	for i := 0; i < len(ary); i++ {
-		if strings.Index(ary[i], fillter) > 0 {
-			tmp = ary[i]
-			break
-		}
-	}
-	if i := strings.Index(tmp, fillter); i > 0 {
-		tmp = tmp[len(fillter)+i:]
-	} else {
-		return "", errors.New("Not name " + fillter)
-	}
-	if i := strings.Index(tmp, fillter1); i > 0 {
-		tmp = tmp[:i+len(fillter1)]
-	} else {
-		return "", errors.New("Not name " + fillter1)
-	}
-
-	return tmp, nil
+	return getFileTitle(string(out))
 
 }
 
