@@ -67,7 +67,8 @@ func EndCK() {
 
 func main() {
 	log.SetFlags(log.Llongfile | log.Flags())
-	pyroscopesetup.Setup()
+	py := pyroscopesetup.Setup()
+	py.Run()
 	ctx := context.Background()
 	fmt.Println("start")
 	if err := Run(ctx); err != nil {
