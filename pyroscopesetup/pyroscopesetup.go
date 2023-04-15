@@ -9,7 +9,7 @@ import (
 )
 
 type PyroScope struct {
-	Hostname      string `env:"HOSTNAME`
+	Hostname      string `env:"HOSTNAME"`
 	PyroScopeFlag string `env:"PYROSCOPE_FLAG" envDefault:"TRUE"`
 	AppName       string `env:"APPLICATION_NAME" envDefault:"youtubedown"`                     //pyroscopeの表示名
 	ServerAddress string `env:"SERVER_ADDRESS" envDefault:"http://pyroscorpe.bookserver.home"` //pyroscopeのサーバアドレス
